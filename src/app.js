@@ -1,3 +1,4 @@
+require('colors');
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -22,4 +23,6 @@ app.get('/', (req, res) => {
 app.use('/api/v1', v1);
 app.use(handleErrors);
 
-app.listen(4000);
+app.listen(4000, () => {
+  console.log('App started at port 4000'.green);
+});
