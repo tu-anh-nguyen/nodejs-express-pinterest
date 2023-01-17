@@ -23,6 +23,5 @@ app.get('/', (req, res) => {
 app.use('/api/v1', v1);
 app.use(handleErrors);
 
-app.listen(4000, () => {
-  console.log('App started at port 4000'.green);
-});
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`.green));
