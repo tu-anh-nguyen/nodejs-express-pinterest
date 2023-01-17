@@ -6,8 +6,8 @@ ErrUnauthenticated,1003,401,Unauthentication
 ErrPermissionDenied,1006,403,Permission denied
 ErrAccountExisted,1007,200,Account already existed
 ErrUserNotFound,2000,400,User not found
-ErrRestaurantNotFound,2001,400,Restaurant not found
-ErrFoodTypeNotFound,2002,400,Food type not found
+ErrImageNotFound,2001,400,Image not found
+ErrCommentNotFound,2002,400,Comment not found
 ErrFoodNotFound,2003,400,Food not found
 ErrSubFoodNotFound,2004,400,Sub food not found
 ErrOrderNotFound,2005,400,Order not found

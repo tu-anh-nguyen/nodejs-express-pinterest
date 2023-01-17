@@ -35,15 +35,15 @@ const errNameToAppError = {
     code: 2000,
     message: 'User not found',
   },
-  ErrRestaurantNotFound: {
+  ErrImageNotFound: {
     statusCode: 400,
     code: 2001,
-    message: 'Restaurant not found',
+    message: 'Image not found',
   },
-  ErrFoodTypeNotFound: {
+  ErrCommentNotFound: {
     statusCode: 400,
     code: 2002,
-    message: 'Food type not found',
+    message: 'Comment not found',
   },
   ErrFoodNotFound: {
     statusCode: 400,

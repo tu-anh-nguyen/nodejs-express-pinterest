@@ -14,9 +14,7 @@ const authorize = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(parts[1], config.jwtSecretKey);
-    console.log('decoded', decoded);
     const user = await User.findOne({ where: { id: decoded.userId } });
-    console.log('user', user)
     if (!user) {
       throw new SugarError(ErrUnauthenticated);
     }

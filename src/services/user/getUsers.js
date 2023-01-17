@@ -10,6 +10,7 @@ module.exports = async (params) => {
       offset,
     });
 
+    const total = await User.count();
     let nextPaging = null;
 
     if (users.length > limit) {
@@ -17,7 +18,7 @@ module.exports = async (params) => {
       users.pop();
     }
 
-    return { users, nextPaging };
+    return { users, nextPaging, total };
   } catch (error) {
     throw new SugarError(error);
   }

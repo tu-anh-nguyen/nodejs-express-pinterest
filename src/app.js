@@ -4,6 +4,8 @@ const { sequelize } = require('./models');
 const { handleErrors } = require('./helpers/errors');
 
 app.use(express.json());
+app.use(express.static("."));
+
 sequelize.sync({
   alter: true,
   // force: true,
