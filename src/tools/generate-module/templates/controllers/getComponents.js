@@ -3,7 +3,7 @@ module.exports = (componentName, modelName) => ({
 const ${componentName}Services = require('../../services/${componentName}');
 
 module.exports = async (req, res, next) => {
-  const { limit, offset } = req.body;
+  const { limit, offset } = req.query;
 	try {
 		const ${componentName} = await ${componentName}Services.get${modelName}s({ limit, offset });
 		resp({

@@ -5,7 +5,7 @@ const { handleErrors } = require('./helpers/errors');
 
 app.use(express.json());
 sequelize.sync({
-  // alter: true,
+  alter: true,
   // force: true,
 });
 
@@ -14,4 +14,4 @@ const v1 = require('./routes/v1');
 app.use('/api/v1', v1);
 app.use(handleErrors);
 
-app.listen(4100);
+app.listen(4000);

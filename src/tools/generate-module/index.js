@@ -85,16 +85,13 @@ params.forEach((param) => {
   const routeContent = fs
     .readFileSync(`${routeDirectiory}/index.js`)
     .toString();
-  const routeImportIdx = routeContent.indexOf(`module.exports = router;`);
+  const routeImportIdx = routeContent.indexOf(`\nmodule.exports = router;`);
   const newRouteContent =
     routeContent.slice(0, routeImportIdx) +
-    `const ${componentModel}Router = require('./${componentModel}');
-router.use('/${tableName}s', ${componentModel}Router);\n` +
+    `\nconst ${componentName}Router = require('./${componentName}');
+router.use('/${tableName}s', ${componentName}Router);\n` +
     routeContent.slice(routeImportIdx);
-  console.log('routeContent', routeContent);
-  console.log('routeImportIdx', routeImportIdx);
-  console.log('newRouteContent', newRouteContent);
-  // fs.writeFileSync(`${routeDirectiory}/index.js`, newRouteContent);
+  fs.writeFileSync(`${routeDirectiory}/index.js`, newRouteContent);
   console.log('UPDATED'.bgYellow, `${routeDirectiory}/index.js`.green);
 
   /** Controllers genration */

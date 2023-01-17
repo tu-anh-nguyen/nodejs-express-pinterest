@@ -22,7 +22,9 @@ const sequelize = new Sequelize(
   }
 })();
 
+const User = require('./User')(sequelize);
 
 module.exports = {
+  User,
   sequelize,
 };

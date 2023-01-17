@@ -6,26 +6,25 @@ const { User } = require('../models');
 
 const authorize = async (req, res, next) => {
   try {
-    const bearerToken = req.headers.authorization || ''; // Bearer abcxyz
-    const parts = bearerToken.split(' ') || []; // ["Bearer", "abcxyz"]
+    const bearerToken = req.headers.authorization || '';
+    const parts = bearerToken.split(' ') || [];
 
     if (parts.length !== 2 || parts[0] !== 'Bearer' || !parts[1].trim()) {
       throw new SugarError(ErrUnauthenticated);
     }
 
     const decoded = jwt.verify(parts[1], config.jwtSecretKey);
-
-    const user = await User.findOne({ where: { id: decoded.id } });
+    console.log('decoded', decoded);
+    const user = await User.findOne({ where: { id: decoded.userId } });
+    console.log('user', user)
     if (!user) {
       throw new SugarError(ErrUnauthenticated);
     }
 
-    req.userId = decoded.id;
+    req.userId = decoded.userId;
     req.restaurantIds = decoded.restaurantIds;
     next();
   } catch (error) {
-    // Do là async nên phải dùng next để error middleware handle,
-    // ngược lại sync thì có thẻ dùng throw
     if (error instanceof jwt.JsonWebTokenError) {
       error.code = ErrUnauthenticated.code;
       error.statusCode = ErrUnauthenticated.statusCode;
