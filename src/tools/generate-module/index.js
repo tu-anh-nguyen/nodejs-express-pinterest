@@ -41,6 +41,7 @@ params.forEach((param) => {
   const servicesDirectory = `./src/services/${componentName}`;
 
   /** Model genration */
+  console.log('========\nGenerating model');
   const generateModelTemplates = componentModel(
     componentName,
     modelName,
@@ -51,40 +52,53 @@ params.forEach((param) => {
     generateModelTemplates.content
   );
   console.log(
-    'CREATED'.blue,
+    'CREATED'.bgGreen,
     `${modelDirectiory}/${generateModelTemplates.name}`.green
   );
 
   const modelContent = fs
     .readFileSync(`${modelDirectiory}/index.js`)
     .toString();
-  const firstIdx = modelContent.indexOf(`\n  module.exports = {`);
+  const firstIdx = modelContent.indexOf(`\nmodule.exports = {`);
   const secondIdx = modelContent.indexOf(`  sequelize,`);
-  console.log('firstIdx', firstIdx)
-  console.log('secondIdx', secondIdx)
-  const newContent =
+  const newModelContent =
     modelContent.slice(0, firstIdx) +
     `const ${modelName} = require('./${modelName}')(sequelize);\n` +
     modelContent.slice(firstIdx, secondIdx) +
     `  ${modelName},\n` +
     modelContent.slice(secondIdx);
-
-  // fs.writeFileSync(`${modelDirectiory}/index.js`, newContent);
-
-  console.log('UPDATED'.green, `${modelDirectiory}/index.js`.green);
+  fs.writeFileSync(`${modelDirectiory}/index.js`, newModelContent);
+  console.log('UPDATED'.bgYellow, `${modelDirectiory}/index.js`.green);
 
   /** Route genration */
+  console.log('========\nGenerating routes');
   const generateRouteTemplates = componentRoute(componentName, modelName);
   fs.writeFileSync(
     `${routeDirectiory}/${generateRouteTemplates.name}`,
     generateRouteTemplates.content
   );
   console.log(
-    'CREATED'.blue,
+    'CREATED'.bgGreen,
     `${routeDirectiory}/${generateRouteTemplates.name}`.green
   );
 
+  const routeContent = fs
+    .readFileSync(`${routeDirectiory}/index.js`)
+    .toString();
+  const routeImportIdx = routeContent.indexOf(`module.exports = router;`);
+  const newRouteContent =
+    routeContent.slice(0, routeImportIdx) +
+    `const ${componentModel}Router = require('./${componentModel}');
+router.use('/${tableName}s', ${componentModel}Router);\n` +
+    routeContent.slice(routeImportIdx);
+  console.log('routeContent', routeContent);
+  console.log('routeImportIdx', routeImportIdx);
+  console.log('newRouteContent', newRouteContent);
+  // fs.writeFileSync(`${routeDirectiory}/index.js`, newRouteContent);
+  console.log('UPDATED'.bgYellow, `${routeDirectiory}/index.js`.green);
+
   /** Controllers genration */
+  console.log('========\nGenerating controllers');
   if (fs.existsSync(controllersDirectory)) {
     console.error(`Controllers ${componentName} already exists.`.red);
   } else {
@@ -100,13 +114,14 @@ params.forEach((param) => {
         template.content
       );
       console.log(
-        'CREATED'.blue,
+        'CREATED'.bgGreen,
         `${controllersDirectory}/${template.name}`.green
       );
     });
   }
 
   /** Services genration */
+  console.log('========\nGenerating services');
   if (fs.existsSync(servicesDirectory)) {
     console.error(`Services ${componentName} already exists.`.red);
   } else {
@@ -120,8 +135,10 @@ params.forEach((param) => {
         `${servicesDirectory}/${template.name}`,
         template.content
       );
+      console.log(
+        'CREATED'.bgGreen,
+        `${servicesDirectory}/${template.name}`.green
+      );
     });
-
-    console.log('CREATED'.blue, `${servicesDirectory}/${template.name}`.green);
   }
 });
